@@ -1,0 +1,51 @@
+/* Ajustes finais de contraste do login no tema escuro. */
+html[data-theme="dark"] .card {
+  background: rgba(14, 31, 50, 0.97) !important;
+  border-color: rgba(93, 169, 255, 0.28) !important;
+  color: #eef7ff !important;
+}
+
+html[data-theme="dark"] .card::before {
+  background: linear-gradient(135deg, rgba(30, 65, 99, 0.72), rgba(16, 36, 58, 0.86)) !important;
+}
+
+html[data-theme="dark"] .title,
+html[data-theme="dark"] .label {
+  color: #eef7ff !important;
+}
+
+html[data-theme="dark"] .subtitle,
+html[data-theme="dark"] .foot {
+  color: #a9bfd6 !important;
+}
+
+html[data-theme="dark"] .input {
+  background: #102740 !important;
+  border-color: #365675 !important;
+  color: #f5f9ff !important;
+  caret-color: #ffc928;
+}
+
+html[data-theme="dark"] .input::placeholder {
+  color: #88a2bc !important;
+}
+
+html[data-theme="dark"] .input:focus {
+  border-color: #55a7ff !important;
+  box-shadow: 0 0 0 4px rgba(49, 151, 255, 0.16) !important;
+}
+
+html[data-theme="dark"] .toggle {
+  color: #9eb9d4 !important;
+}
+
+html[data-theme="dark"] .theme-switch {
+  background: #112a44 !important;
+  border-color: #3f6487 !important;
+  color: #f3f8ff !important;
+}
+
+html[data-theme="dark"] .theme-switch:hover {
+  background: #173754 !important;
+  border-color: #ffc928 !important;
+}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SystemCollege — Meneiger Page</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230d5dad'/%3E%3Cpath d='M16 29 32 16l16 13v20H16z' fill='%23f4c542'/%3E%3Cpath d='M27 49V34h10v15' fill='%230d5dad'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+  <script>
+    (() => {
+      const saved = localStorage.getItem('systemcollege-theme') || localStorage.getItem('gestao-integral-theme');
+      const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = saved || preferred;
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="theme-fix.css?v=1">
+  <link rel="stylesheet" href="login-layout-v2.css?v=1">
+</head>
+<body>
+  <button id="themeToggle" class="theme-switch" type="button" aria-label="Ativar tema escuro" aria-pressed="false">
+    <i class="ri-moon-clear-line" aria-hidden="true"></i>
+    <span>Tema escuro</span>
+  </button>
+  <main class="login-wrapper">
+    <section class="login-intro" aria-label="Apresentação do sistema">
+      <div class="intro-brand">
+        <span class="intro-brand__icon"><i class="ri-school-line" aria-hidden="true"></i></span>
+        <div>
+          <strong>SystemCollege</strong>
+          <small>Meneiger Page</small>
+        </div>
+      </div>
+      <div class="intro-copy">
+        <p class="intro-kicker">Gestão escolar em um só lugar</p>
+        <h2>Organize a rotina da escola com mais clareza.</h2>
+        <p>Administre alunos, turmas, cursos, relatórios e finanças em uma experiência simples e integrada.</p>
+      </div>
+      <ul class="intro-features" aria-label="Recursos principais">
+        <li><i class="ri-checkbox-circle-fill" aria-hidden="true"></i> Informações centralizadas</li>
+        <li><i class="ri-checkbox-circle-fill" aria-hidden="true"></i> Relatórios rápidos</li>
+        <li><i class="ri-checkbox-circle-fill" aria-hidden="true"></i> Acesso seguro</li>
+      </ul>
+    </section>
+    <section class="card">
+      <p class="eyebrow"><span></span> SystemCollege</p>
+      <div class="avatar">
+        <i class="ri-shield-user-fill" aria-hidden="true"></i>
+      </div>
+      <h1 class="title">Acesso do Administrador</h1>
+      <p class="subtitle">Entre com seu usuário e senha</p>
+
+      <form id="loginForm" class="form" autocomplete="on">
+        <div class="field">
+          <label for="user" class="label">Usuário</label>
+          <input id="user" name="user" class="input" type="text" inputmode="text" autocomplete="username" required>
+        </div>
+
+        <div class="field">
+          <label for="pass" class="label">Senha</label>
+          <div class="password">
+            <input id="pass" name="pass" class="input" type="password" autocomplete="current-password" required>
+            <button type="button" class="toggle" aria-label="Mostrar/ocultar senha">
+              <i class="ri-eye-off-line" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <p id="error" class="error" role="alert" hidden>Usuário ou senha inválidos.</p>
+
+        <button id="submitBtn" class="btn btn--primary" type="submit">
+          <i class="ri-login-box-line"></i>
+          Entrar
+        </button>
+      </form>
+
+      <footer class="foot">
+        <small>© <span id="year"></span> Meneiger Page</small>
+      </footer>
+    </section>
+  </main>
+
+  <script src="script.js?v=4"></script>
+</body>
+</html>

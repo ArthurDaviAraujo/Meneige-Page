@@ -1,0 +1,12 @@
+.vscode/
+vendor/
+api/vendor/
+api/_core/config.php
+.local-admin-access.txt
+error_log
+*.log
+dashboard/uploads/
+institucional/
+storage/
+*.sqlite
+*.db

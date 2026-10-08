@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SystemCollege — Meneiger Page</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230d5dad'/%3E%3Cpath d='M16 29 32 16l16 13v20H16z' fill='%23f4c542'/%3E%3Cpath d='M27 49V34h10v15' fill='%230d5dad'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+        (() => {
+            const saved = localStorage.getItem('systemcollege-theme') || localStorage.getItem('gestao-integral-theme');
+            const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            document.documentElement.dataset.theme = saved || preferred;
+        })();
+    </script>
+    <link rel="stylesheet" href="assets/dashboard.css?v=4">
+    <link rel="stylesheet" href="assets/layout-v2.css?v=1">
+    <script>
+        document.documentElement.style.visibility = 'hidden';
+    </script>
+</head>
+<body>
+    <aside class="sidebar" aria-label="Navegação principal" id="sidebar">
+        <div class="brand">
+            <i class="ri-school-line"></i>
+            <div class="brand__copy">
+                <span id="systemName">Meneiger Page</span>
+                <small>SystemCollege</small>
+            </div>
+        </div>
+        <nav class="nav">
+            <p class="nav__label">Visão geral</p>
+            <button class="nav__item" data-view="dashboard">
+                <i class="ri-home-8-line"></i> Dashboard
+            </button>
+            <p class="nav__label">Gestão escolar</p>
+            <button class="nav__item" data-view="alunos">
+                <i class="ri-user-3-line"></i> Alunos
+            </button>
+            <button class="nav__item" data-view="academico">
+                <i class="ri-node-tree"></i> Estrutura Acadêmica
+            </button>
+            <button class="nav__item" data-view="cursos">
+                <i class="ri-booklet-line"></i> Cursos Extras
+            </button>
+            <button class="nav__item" data-view="financeiro">
+                <i class="ri-money-dollar-circle-line"></i> Financeiro
+            </button>
+            <button class="nav__item is-active" data-view="calc">
+                <i class="ri-calculator-line"></i> Calculadora
+            </button>
+            <button class="nav__item" data-view="relatorios">
+                <i class="ri-pie-chart-2-line"></i> Relatórios
+            </button>
+            <p class="nav__label">Administração</p>
+            <button class="nav__item" data-view="admin">
+                <i class="ri-shield-keyhole-line"></i> Admin e Segurança (Usuários)
+            </button>
+            <button class="nav__item" data-view="config">
+                <i class="ri-settings-3-line"></i> Configurações
+            </button>
+            <button class="nav__item" data-view="logs">
+                <i class="ri-history-line"></i> Logs
+            </button>
+            <button class="nav__item" data-view="ferramentas">
+                <i class="ri-tools-line"></i> Ferramentas
+            </button>
+        </nav>
+        <div class="sidebar__footer">
+            <small>Desenvolvido por <strong>ByteLab</strong></small>
+        </div>
+    </aside>
+
+    <div id="backdrop" class="backdrop" hidden></div>
+
+    <main class="page">
+        <header class="page__header">
+            <div class="header__left">
+                <button id="btnMenu" class="hamburger" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="ri-menu-line"></i>
+                </button>
+                <div class="header__copy">
+                    <p class="header__eyebrow">SystemCollege</p>
+                    <h1 class="title"><i class="ri-calculator-line"></i> Calculadora de Orçamento</h1>
+                    <p class="subtitle">Simule custos de mensalidade com grade semanal personalizada</p>
+                </div>
+            </div>
+            <div class="header__right">
+                <button id="themeToggleDashboard" class="theme-switch" type="button" aria-label="Ativar tema escuro" aria-pressed="false">
+                    <i class="ri-moon-clear-line" aria-hidden="true"></i>
+                    <span>Tema escuro</span>
+                </button>
+                <div class="userbox">
+                    <span class="user-chip" title="Usuário logado">
+                        <i class="ri-user-3-line" aria-hidden="true"></i>
+                        <b id="userName">Usuário</b>
+                    </span>
+                    <button id="logoutBtn" class="btn btn--ghost" type="button" title="Encerrar sessão">
+                        <i class="ri-logout-box-r-line"></i> Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <section id="view-dashboard" class="view is-visible" aria-labelledby="pageTitle">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-card__head"><span>Alunos</span><i class="ri-group-line"></i></div>
+                    <div><span id="kpiAlunos">0</span><small>cadastrados</small></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-card__head"><span>Turmas</span><i class="ri-team-line"></i></div>
+                    <div><span id="kpiTurmas">0</span><small>ativas</small></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-card__head"><span>Séries</span><i class="ri-stack-line"></i></div>
+                    <div><span id="kpiSeries">0</span><small>organizadas</small></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-card__head"><span>Segmentos</span><i class="ri-node-tree"></i></div>
+                    <div><span id="kpiSegmentos">0</span><small>acadêmicos</small></div>
+                </div>
+            </div>
+
+            <section class="dashboard-panel dashboard-panel--summary">
+                <h2><i class="ri-bar-chart-box-line"></i> Resumo</h2>
+                <ul id="dashResumo"></ul>
+            </section>
+
+            <section class="dashboard-panel dashboard-panel--activity">
+                <h2><i class="ri-pulse-line"></i> Atividade recente</h2>
+                <div id="dashLogs" class="audit-list"></div>
+            </section>
+        </section>
+
+        <section id="view-calc" class="view">
+            <div class="grid grid--calc">
+                <section class="card">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="ri-slideshow-2-line"></i> Seleção de Série</h2>
+                    </div>
+                    <div class="field">
+                        <label class="label">Segmento <span class="req">*</span></label>
+                        <div class="select">
+                            <select id="segmentoSelect"></select>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Série <span class="req">*</span></label>
+                        <div class="select">
+                            <select id="serieSelect"></select>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </div>
+                    <div class="section-split">
+                        <div class="section-header">
+                            <h2 class="section-title"><i class="ri-calendar-schedule-line"></i> Grade Semanal</h2>
+                        </div>
+                        <button id="btnReplicar" class="btn btn--ghost">
+                            <i class="ri-file-copy-line"></i> Replicar Segunda-feira
+                        </button>
+                    </div>
+                    <div id="weekGrid" class="week-grid"></div>
+                </section>
+
+                <aside class="card sticky">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="ri-currency-line"></i> Detalhamento de Custos</h2>
+                    </div>
+                    <div class="prices">
+                        <h3 class="block-title"><i class="ri-price-tag-3-line"></i> Valores de Tabela</h3>
+                        <div class="kv">
+                            <span>Mensalidade da Série</span><strong id="precoSerie">R$ 0,00</strong>
+                        </div>
+                        <div class="kv">
+                            <span>Horas Extras (<span id="totHoras">0</span>h/semana)</span><strong id="precoExtras">R$ 0,00</strong>
+                        </div>
+                        <div class="kv">
+                            <span>Almoços (<span id="totAlmocos">0</span> dias/semana)</span><strong id="precoAlmoco">R$ 0,00</strong>
+                        </div>
+                        <div class="kv">
+                            <span>Jantares (<span id="totJantares">0</span> dias/semana)</span><strong id="precoJantar">R$ 0,00</strong>
+                        </div>
+                        <div class="kv kv--sum">
+                            <span>Valor de Tabela:</span><strong id="valorTabela">R$ 0,00</strong>
+                        </div>
+                    </div>
+                    <div class="discounts">
+                        <h3 class="block-title"><i class="ri-percent-line"></i> Percentuais de Desconto</h3>
+                        <label class="label small">Desconto na Mensalidade (%)</label>
+                        <input type="number" id="descMensalidade" class="input" value="0" min="0" max="100" step="1">
+                        <label class="label small">Desconto nas Horas Extras (%)</label>
+                        <input type="number" id="descExtras" class="input" value="0" min="0" max="100" step="1">
+                        <label class="label small">Desconto nos Almoços (%)</label>
+                        <input type="number" id="descAlmoco" class="input" value="0" min="0" max="100" step="1">
+                        <label class="label small">Desconto nos Jantares (%)</label>
+                        <input type="number" id="descJantar" class="input" value="0" min="0" max="100" step="1">
+                    </div>
+                    <div class="totals">
+                        <h3 class="block-title"><i class="ri-equalizer-line"></i> Valores Finais</h3>
+                        <div class="kv"><span>Mensalidade com desconto:</span><strong id="mensalFinal">R$ 0,00</strong></div>
+                        <div class="kv"><span>Horas extras com desconto:</span><strong id="extrasFinal">R$ 0,00</strong></div>
+                        <div class="kv"><span>Almoços com desconto:</span><strong id="almocoFinal">R$ 0,00</strong></div>
+                        <div class="kv"><span>Jantares com desconto:</span><strong id="jantarFinal">R$ 0,00</strong></div>
+                        <div class="divider"></div>
+                        <div class="kv kv--grand">
+                            <span>Valor Final:</span><strong id="valorFinal">R$ 0,00</strong>
+                        </div>
+                        <p class="muted" id="descGlobal">Desconto Global: 0.0% (R$ 0,00)</p>
+                        <button id="btnGerar" class="btn btn--primary">
+                            <i class="ri-file-pdf-line"></i> Gerar Orçamento
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="view-admin" class="view">
+            <div class="content">
+                <h2 class="section-title"><i class="ri-shield-keyhole-line"></i> Administração e Segurança</h2>
+                <div class="grid grid--two">
+                    <div class="card card--wide">
+                        <div class="section-header">
+                            <h3 class="block-title">Gestão de Usuários e Perfis</h3>
+                            <div class="toolbar">
+                                <i class="ri-search-line"></i>
+                                <input id="buscaUsuarios" class="input search" placeholder="Buscar por nome, e-mail ou perfil">
+                            </div>
+                        </div>
+                        <div class="scroll-x">
+                            <div class="table table--wide" id="tabelaUsuarios">
+                                <div class="table__row table__head">
+                                    <span>Usuário</span><span>E-mail</span><span>Perfil</span><span>Ações</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btnAddUsuario" class="fab" type="button" aria-label="Cadastrar usuário">
+                        <i class="ri-user-add-line"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal-backdrop" id="userModal" hidden>
+            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
+                <div class="modal__header">
+                    <h3 id="userModalTitle"><i class="ri-user-add-line"></i> Cadastrar Usuário</h3>
+                    <button class="modal__close" id="userModalClose" aria-label="Fechar">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal__body">
+                    <div class="card card--user">
+                        <h4 class="block-title">Cadastro do Usuário</h4>
+                        <div class="grid grid--form">
+                            <div class="field">
+                                <label class="label">Nome</label>
+                                <input id="modalNome" class="input" type="text" placeholder="Nome do usuário">
+                            </div>
+                            <div class="field">
+                                <label class="label">E-mail</label>
+                                <input id="modalEmail" class="input" type="email" placeholder="email@exemplo.com">
+                            </div>
+                            <div class="field">
+                                <label for="contaSenha" class="label">Senha</label>
+                                <div class="input-append">
+                                    <input id="contaSenha" type="password" class="input" placeholder="••••••••">
+                                    <button id="btnToggleSenha" type="button" class="icon-btn" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar/ocultar senha">
+                                        <i class="ri-eye-line"></i>
+                                    </button>
+                                </div>
+                                <small id="forcaSenha" class="hint">Força: —</small>
+                                <small class="hint">Para novo usuário a senha é obrigatória. Ao editar, preencha apenas se quiser alterar.</small>
+                            </div>
+                            <div class="field">
+                                <label class="label">Perfil</label>
+                                <div class="select">
+                                    <select id="modalPerfil">
+                                        <option value="admin">Administrador</option>
+                                        <option value="padrao" selected>Padrão</option>
+                                        <option value="leitor">Leitor</option>
+                                    </select>
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="section-header">
+                            <h4 class="block-title">Permissões por Área</h4>
+                            <div class="toolbar">
+                                <i class="ri-search-line"></i>
+                                <input id="modalBuscaPerm" class="input search" placeholder="Buscar área/recurso">
+                            </div>
+                        </div>
+                        <div class="field-inline">
+                            <span class="spacer"></span>
+                            <button id="modalExpand" class="btn"><i class="ri-arrow-down-s-line"></i> Expandir</button>
+                            <button id="modalCollapse" class="btn"><i class="ri-arrow-up-s-line"></i> Recolher</button>
+                            <button id="modalSelectAll" class="btn"><i class="ri-check-double-line"></i> Marcar tudo</button>
+                            <button id="modalClear" class="btn"><i class="ri-eraser-line"></i> Limpar</button>
+                        </div>
+                        <ul class="tree" id="modalArvorePerm">
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-user-settings-line"></i> Usuários & Perfis</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="admin.usuarios"> Acessar Administração de Usuários</label>
+                                    <label class="check"><input type="checkbox" data-perm="user.read"> Listar/Ver Usuários</label>
+                                    <label class="check"><input type="checkbox" data-perm="user.create"> Criar Usuários</label>
+                                    <label class="check"><input type="checkbox" data-perm="user.update"> Editar/Alterar Perfil</label>
+                                    <label class="check"><input type="checkbox" data-perm="user.delete"> Desativar/Excluir</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-folder-2-line"></i> Administração</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="admin.config"> Configurações</label>
+                                    <label class="check"><input type="checkbox" data-perm="admin.logs"> Logs (admin)</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-node-tree"></i> Estrutura Acadêmica</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="acad.visualizar"> Visualizar</label>
+                                    <label class="check"><input type="checkbox" data-perm="acad.segmentos"> Gerir Segmentos</label>
+                                    <label class="check"><input type="checkbox" data-perm="acad.series"> Gerir Séries</label>
+                                    <label class="check"><input type="checkbox" data-perm="acad.turmas"> Gerir Turmas</label>
+                                    <label class="check"><input type="checkbox" data-perm="acad.alunos"> Gerir Alunos</label>
+                                    <label class="check"><input type="checkbox" data-perm="acad.cadastro"> Cadastros (rápidos)</label>
+                                    <label class="check"><input type="checkbox" data-perm="acad.transferencia"> Transferência</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-time-line"></i> Horários</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="horarios.visualizar"> Visualizar</label>
+                                    <label class="check"><input type="checkbox" data-perm="horarios.edicao"> Edição de Rotina</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-booklet-line"></i> Cursos Extracurriculares</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children" id="permissoesCursos">
+                                    <label class="check"><input type="checkbox" data-perm="curso.cadastro"> Cadastro de Curso</label>
+                                    <label class="check"><input type="checkbox" data-perm="curso.aluno_cadastro"> Cadastro de Aluno em Curso</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-money-dollar-circle-line"></i> Financeiro</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="fin.precos"> Tabela de Preços (visualizar)</label>
+                                    <label class="check"><input type="checkbox" data-perm="fin.atualizar_precos"> Atualização de Preços</label>
+                                    <label class="check"><input type="checkbox" data-perm="fin.faturas"> Faturas</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-pie-chart-2-line"></i> Relatórios</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="rel.kpi"> KPIs</label>
+                                    <label class="check"><input type="checkbox" data-perm="rel.graficos"> Gráficos</label>
+                                    <label class="check"><input type="checkbox" data-perm="rel.total"> Visualizar Tudo</label>
+                                    <label class="check"><input type="checkbox" data-perm="rel.total_alunos"> Total de Alunos</label>
+                                    <label class="check"><input type="checkbox" data-perm="rel.receita"> Receita</label>
+                                    <label class="check"><input type="checkbox" data-perm="rel.refeicoes"> Refeições</label>
+                                    <label class="check"><input type="checkbox" data-perm="rel.horas_extras"> Horas Extras</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-tools-line"></i> Ferramentas</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="tools.import"> Importação</label>
+                                    <label class="check"><input type="checkbox" data-perm="tools.notif"> Notificações</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-settings-3-line"></i> Configurações</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="config.geral"> Acesso às Configurações</label>
+                                </div>
+                            </li>
+                            <li class="tree__item">
+                                <div class="tree__head">
+                                    <button class="tree__toggle"><i class="ri-history-line"></i> Logs</button>
+                                    <label class="check title-check"><input type="checkbox" class="group-check"> Selecionar</label>
+                                </div>
+                                <div class="tree__children">
+                                    <label class="check"><input type="checkbox" data-perm="logs.visualizar"> Visualizar Logs</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal__footer">
+                    <button class="btn" id="userModalCancel">Cancelar</button>
+                    <button class="btn btn--primary" id="userModalSave">
+                        <i class="ri-check-line"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-backdrop" id="transferModal" hidden>
+            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="transferTitle">
+                <div class="modal__header">
+                    <h3 id="transferTitle"><i class="ri-exchange-line"></i> Transferir Turma</h3>
+                    <button class="modal__close" id="transferClose" aria-label="Fechar">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal__body">
+                    <div class="card">
+                        <h4 class="block-title">Selecione o destino</h4>
+                        <div class="grid grid--form">
+                            <div class="field">
+                                <label class="label">Segmento</label>
+                                <div class="select">
+                                    <select id="transfSeg"></select>
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Série</label>
+                                <div class="select">
+                                    <select id="transfSerie"></select>
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Turma</label>
+                                <div class="select">
+                                    <select id="transfTurma"></select>
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="muted" id="transfHint">Carregando estrutura acadêmica…</p>
+                    </div>
+                </div>
+                <div class="modal__footer">
+                    <button class="btn" id="transferCancel">Cancelar</button>
+                    <button class="btn btn--primary" id="transferConfirm">
+                        <i class="ri-check-line"></i> Aplicar transferência
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section id="view-config" class="view">
+            <div class="content">
+                <h2 class="section-title"><i class="ri-settings-3-line"></i> Configurações Gerais</h2>
+                <div class="card">
+                    <div class="section-header">
+                        <h3 class="block-title">Preferências do Sistema</h3>
+                        <div class="toolbar">
+                            <i class="ri-search-line"></i>
+                            <input id="buscaConfig" class="input search" placeholder="Buscar campo de configuração">
+                        </div>
+                    </div>
+                    <div class="field config-item">
+                        <label class="label" for="cfgNomeSistema">Nome do Sistema</label>
+                        <input id="cfgNomeSistema" class="input" type="text" placeholder="Nome do Sistema" value="Gestão do Horário Integral">
+                    </div>
+                    <div class="field config-item">
+                        <label class="label">Logomarca da Escola</label>
+                        <div class="logo-row">
+                            <img id="cfgLogoPreview" alt="Logo da escola" hidden>
+                            <div class="actions">
+                                <button id="cfgLogoUploadBtn" type="button" class="btn">
+                                    <i class="ri-upload-2-line"></i> Carregar logo
+                                </button>
+                                <button id="cfgLogoRemoveBtn" type="button" class="btn btn--ghost">
+                                    <i class="ri-close-line"></i> Remover logo
+                                </button>
+                            </div>
+                        </div>
+                        <input id="cfgLogoInput" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden>
+                        <small class="muted">Formatos aceitos: PNG, JPG, SVG ou WEBP (máx. 2&nbsp;MB).</small>
+                        <small id="cfgStatus" class="muted"></small>
+                    </div>
+                    <p class="muted">As alterações aqui são apenas visuais.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-logs" class="view">
+            <div class="content">
+                <h2 class="section-title"><i class="ri-history-line"></i> Log de Auditoria</h2>
+                <div class="card">
+                    <div class="section-header">
+                        <h3 class="block-title">Ocorrências</h3>
+                        <div class="toolbar">
+                            <div class="filters">
+                                <select id="filtroAcao" class="select-filter">
+                                    <option value="">Todos os tipos</option>
+                                    <option value="create">Criações</option>
+                                    <option value="update">Atualizações</option>
+                                    <option value="delete">Exclusões</option>
+                                    <option value="import">Importações</option>
+                                </select>
+                                <div class="search-box">
+                                    <i class="ri-search-line"></i>
+                                    <input id="buscaLog" class="input search" placeholder="Buscar por nome, ação ou texto...">
+                                </div>
+                                <button id="btnGerarRelatorio" class="btn btn-sm btn-primary">
+                                    <i class="ri-file-chart-line"></i> Gerar Relatório
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-filters" id="logFilters">
+                        <div class="report-field">
+                            <label for="lgUser">Usuário (busca)</label>
+                            <input id="lgUser" class="input" placeholder="Nome, e-mail…">
+                        </div>
+                        <div class="report-field">
+                            <label for="lgAcao">Ação</label>
+                            <select id="lgAcao">
+                                <option value="">Todas</option>
+                                <option value="create">Criações</option>
+                                <option value="update">Atualizações</option>
+                                <option value="delete">Exclusões</option>
+                                <option value="import">Importações</option>
+                            </select>
+                        </div>
+                        <div class="report-field">
+                            <label for="lgDataIni">Data (de)</label>
+                            <input type="date" id="lgDataIni">
+                        </div>
+                        <div class="report-field">
+                            <label for="lgDataFim">Data (até)</label>
+                            <input type="date" id="lgDataFim">
+                        </div>
+                        <div class="report-field">
+                            <label for="lgBusca">Buscar texto</label>
+                            <input type="search" id="lgBusca" placeholder="Mensagem, entidade, ID…">
+                        </div>
+                        <div class="report-field">
+                            <label for="lgView">Visualização</label>
+                            <select id="lgView">
+                                <option value="lista">Lista</option>
+                                <option value="resumo">Resumo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="audit" id="listaLog"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-academico" class="view">
+            <div class="content">
+                <h2 class="section-title"><i class="ri-node-tree"></i> Estrutura Acadêmica</h2>
+                <div class="grid grid--two">
+                    <div class="card">
+                        <div class="section-header">
+                            <h3 class="block-title">Segmentos, Séries e Turmas</h3>
+                            <div class="toolbar">
+                                <i class="ri-search-line"></i>
+                                <input id="buscaTurmas" class="input search" placeholder="Buscar segmento/série/turma">
+                                <button id="btnAddAcademico" class="fab fab--small" type="button" aria-label="Cadastrar na estrutura acadêmica" title="Cadastrar">
+                                    <i class="ri-node-tree" style="color: white;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <ul class="list" id="arvoreAcademica"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-backdrop" id="acadModal" hidden>
+                <div class="modal">
+                    <div class="modal__header">
+                        <h3><i class="ri-node-tree"></i> Cadastrar na Estrutura</h3>
+                        <button class="modal__close" id="acadModalClose" title="Fechar">
+                            <i class="ri-close-line"></i>
+                        </button>
+                    </div>
+                    <div class="modal__body">
+                        <form id="acadForm" class="grid">
+                            <div class="field">
+                                <label class="label">O que deseja cadastrar?</label>
+                                <div class="field-inline">
+                                    <label><input type="radio" name="acadTipo" value="segmento" checked> Segmento</label>
+                                    <label><input type="radio" name="acadTipo" value="serie"> Série</label>
+                                    <label><input type="radio" name="acadTipo" value="turma"> Turma</label>
+                                    <label><input type="radio" name="acadTipo" value="aluno"> Aluno</label>
+                                </div>
+                            </div>
+                            <div class="acad-fieldset acad-segmento">
+                                <div class="field">
+                                    <label class="label" for="acadNomeSegmento">Nome do Segmento</label>
+                                    <input class="input" id="acadNomeSegmento" type="text" placeholder="Ex.: Educação Infantil">
+                                </div>
+                            </div>
+                            <div class="acad-fieldset acad-serie hidden">
+                                <div class="grid-2">
+                                    <div class="field">
+                                        <label class="label" for="acadSelSegmentoSerie">Segmento</label>
+                                        <div class="select">
+                                            <select id="acadSelSegmentoSerie">
+                                                <option value="">Selecione o Segmento</option>
+                                            </select>
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="acadNomeSerie">Nome da Série</label>
+                                        <input class="input" id="acadNomeSerie" type="text" placeholder="Ex.: 1º Ano">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="acad-fieldset acad-turma hidden">
+                                <div class="grid-3">
+                                    <div class="field">
+                                        <label class="label" for="acadSelSegmentoTurma">Segmento</label>
+                                        <div class="select">
+                                            <select id="acadSelSegmentoTurma">
+                                                <option value="">Selecione o Segmento</option>
+                                            </select>
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="acadSelSerieTurma">Série</label>
+                                        <div class="select">
+                                            <select id="acadSelSerieTurma">
+                                                <option value="">Selecione a Série</option>
+                                            </select>
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="acadNomeTurma">Nome da Turma</label>
+                                        <input class="input" id="acadNomeTurma" type="text" placeholder="Ex.: Turma A">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="acad-fieldset acad-aluno hidden">
+                                <div class="grid-4">
+                                    <div class="field">
+                                        <label class="label" for="acadSelSegmentoAluno">Segmento</label>
+                                        <div class="select">
+                                            <select id="acadSelSegmentoAluno">
+                                                <option value="">Selecione o Segmento</option>
+                                            </select>
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="acadSelSerieAluno">Série</label>
+                                        <div class="select">
+                                            <select id="acadSelSerieAluno">
+                                                <option value="">Selecione a Série</option>
+                                            </select>
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="acadSelTurmaAluno">Turma</label>
+                                        <div class="select">
+                                            <select id="acadSelTurmaAluno">
+                                                <option value="">Selecione a Turma</option>
+                                            </select>
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label" for="acadNomeAluno">Nome do Aluno</label>
+                                        <input class="input" id="acadNomeAluno" type="text" placeholder="Ex.: João Silva">
+                                    </div>
+                                </div>
+                                <div class="grid-1">
+                                    <div class="field">
+                                        <label class="label" for="acadRespAluno">Responsável</label>
+                                        <input class="input" id="acadRespAluno" type="text" placeholder="Ex.: Maria Silva">
+                                    </div>
+                                </div>
+                                <div class="acad-detalhes">
+                                    <div class="divider"></div>
+                                    <h4 class="block-title"><i class="ri-user-settings-line"></i> Detalhes do Aluno</h4>
+                                    <div class="grid-2">
+                                        <div class="field">
+                                            <label class="label">Horário de Entrada</label>
+                                            <input class="input" type="time" id="acadHoraEntrada">
+                                        </div>
+                                        <div class="field">
+                                            <label class="label">Horário de Saída</label>
+                                            <input class="input" type="time" id="acadHoraSaida">
+                                        </div>
+                                    </div>
+                                    <div class="field-inline">
+                                        <label class="check"><input type="checkbox" id="acadTemAlmoco"> Inclui Almoço</label>
+                                        <label class="check"><input type="checkbox" id="acadTemJantar"> Inclui Jantar</label>
+                                    </div>
+                                    <div class="grid-2">
+                                        <div class="field">
+                                            <label class="label">Participa de Curso Extracurricular?</label>
+                                            <div class="select">
+                                                <select id="acadCursoExtra">
+                                                    <option value="">Não</option>
+                                                </select>
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal__footer">
+                        <button class="btn" id="acadModalCancel">Cancelar</button>
+                        <button class="btn btn--primary" id="acadSalvar">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="presencaModal" class="modal" hidden>
+            <div class="modal__dialog">
+                <div class="modal__header">
+                    <h3 class="modal__title"><i class="ri-calendar-check-line"></i> Presença por Dia</h3>
+                    <button id="presencaClose" class="icon-btn" aria-label="Fechar">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+
+                <div class="modal__body">
+                    <div class="grid grid--2">
+                        <div class="field">
+                            <label class="label">Curso</label>
+                            <select id="presCurso" class="input">
+                                <option value="">Selecione o curso</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Data</label>
+                            <input id="presData" type="date" class="input" />
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div id="presListaWrap">
+                        <div class="section-header">
+                            <h4 class="section-title">Lista de Alunos</h4>
+                            <span id="presHint" class="muted">Selecione o curso e a data para carregar os alunos.</span>
+                        </div>
+
+                        <div id="presLista" class="presenca-lista">
+                            <!-- Lista de alunos será carregada aqui via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal__footer">
+                    <button id="presSalvar" class="btn btn--primary">Salvar Presenças</button>
+                    <button id="presencaCancel" class="btn">Fechar</button>
+                </div>
+            </div>
+        </div>
+
+        <section id="view-financeiro" class="view">
+            <div class="content">
+                <h2 class="section-title"><i class="ri-money-dollar-circle-line"></i> Financeiro e Lógica de Negócios</h2>
+                <div class="card">
+                    <h3 class="block-title">Tabela de Preços</h3>
+                    <div class="global-precos">
+                        <h4>Valores Globais</h4>
+                        <div class="row">
+                            <label>Hora Extra (R$):</label>
+                            <input type="number" id="finPrecoHora" step="0.01">
+                            <button id="btnSalvarHora"><i class="ri-save-line"></i> Salvar</button>
+                        </div>
+                        <div class="row">
+                            <label>Almoço (R$):</label>
+                            <input type="number" id="finPrecoAlmoco" step="0.01">
+                            <button id="btnSalvarAlmoco"><i class="ri-save-line"></i> Salvar</button>
+                        </div>
+                        <div class="row">
+                            <label>Janta (R$):</label>
+                            <input type="number" id="finPrecoJanta" step="0.01">
+                            <button id="btnSalvarJanta"><i class="ri-save-line"></i> Salvar</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="filter-row">
+                        <label for="selSegmento">Filtrar por Segmento:</label>
+                        <select id="selSegmento" class="select"></select>
+                    </div>
+                    <div id="seriesGrid" class="grid-series"></div>
+                    <p class="muted">Os valores alimentam a calculadora de orçamento.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-cursos" class="view">
+            <div class="content">
+                <div class="card">
+                    <div class="section-header">
+                        <h3 class="block-title"><i class="ri-file-list-2-line"></i> Catálogo de Cursos</h3>
+                    </div>
+                    <div class="table table--cursos" id="catalogoCursos">
+                        <div class="table__row table__head">
+                            <div>Curso</div>
+                            <div>Professor</div>
+                            <div>Horário</div>
+                            <div>Preço</div>
+                            <div>Ações</div>
+                        </div>
+                        <div class="table__row" data-curso-id="123">
+                            <div>Robóticas</div>
+                            <div>Victor</div>
+                            <div>seg/sex 14:00</div>
+                            <div>R$ 100,00</div>
+                            <div class="actions">
+                                <button class="icon-btn sm" title="Editar" data-act="curso-edit"><i class="ri-pencil-line"></i></button>
+                                <button class="icon-btn sm danger" title="Excluir" data-act="curso-del"><i class="ri-delete-bin-line"></i></button>
+                                <button class="icon-btn sm ok" title="Presença por dia" data-act="presenca-dia" data-curso-id="123"><i class="ri-calendar-check-line"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="btnAddInscricao" class="fab" type="button" aria-label="Adicionar aluno em curso" title="Adicionar aluno em curso">
+                <i class="ri-user-add-line"></i>
+            </button>
+
+            <button id="btnAddCurso" class="fab" type="button" aria-label="Cadastrar curso" title="Cadastrar curso">
+                <i class="ri-booklet-line"></i>
+            </button>
+        </section>
+
+        <section id="view-relatorios" class="view is-visible" aria-labelledby="relatorios-title">
+            <div class="content">
+                <div class="card" id="rg-builder">
+                    <h3 class="block-title">Seleção do Tipo de Relatório</h3>
+                    <div class="report-row">
+                        <div class="report-field">
+                            <label for="rgTipo">Tipo</label>
+                            <select id="rgTipo" name="rgTipo">
+                                <option value="academico" selected>Estrutura Acadêmica / Alunos</option>
+                                <option value="cursos">Cursos Extracurriculares</option>
+                                <option value="financeiro">Financeiro</option>
+                                <option value="logs">Logs / Ações</option>
+                            </select>
+                        </div>
+                        <div class="report-field">
+                            <label for="rgFormato">Formato</label>
+                            <select id="rgFormato" name="rgFormato">
+                                <option value="tabela" selected>Tabela</option>
+                                <option value="grafico">Gráfico</option>
+                            </select>
+                        </div>
+                        <div class="report-field">
+                            <label>Exportação</label>
+                            <div class="export-inline">
+                                <button id="rgExportCSV" class="btn"><i class="ri-download-2-line"></i> CSV</button>
+                                <button id="rgExportPDF" class="btn"><i class="ri-file-pdf-line"></i> PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card rg-panel" id="panel-academico">
+                    <h3 class="block-title">Estrutura Acadêmica / Alunos</h3>
+                    <div class="report-row">
+                        <div class="report-field">
+                            <label for="acSeg">Segmento</label>
+                            <select id="acSeg"><option value="">Todos</option></select>
+                        </div>
+                        <div class="report-field">
+                            <label for="acSerie">Série</label>
+                            <select id="acSerie" disabled><option value="">Todas</option></select>
+                        </div>
+                        <div class="report-field">
+                            <label for="acTurma">Turma</label>
+                            <select id="acTurma" disabled><option value="">Todas</option></select>
+                        </div>
+                        <div class="report-field">
+                            <label for="acAluno">Aluno (busca)</label>
+                            <input id="acAluno" type="search" placeholder="Nome do aluno…">
+                        </div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-field">
+                            <label for="acEscopo">Relatório</label>
+                            <select id="acEscopo">
+                                <option value="resumo">Resumo</option>
+                                <option value="por-segmento">Por Segmento</option>
+                                <option value="por-serie">Por Série</option>
+                                <option value="por-turma">Por Turma</option>
+                                <option value="por-aluno" selected>Por Aluno</option>
+                            </select>
+                        </div>
+                        <div class="report-field">
+                            <label for="acDataIni">Data Inicial</label>
+                            <input id="acDataIni" type="date">
+                        </div>
+                        <div class="report-field">
+                            <label for="acDataFim">Data Final</label>
+                            <input id="acDataFim" type="date">
+                        </div>
+                        <div class="report-field">
+                            <label for="acVis">Visualização</label>
+                            <select id="acVis">
+                                <option value="tabela" selected>Tabela</option>
+                                <option value="pizza">Gráfico de Pizza (Presenças)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card soft" id="ac-filtros-aluno">
+                        <div class="block-title">Filtros do aluno</div>
+                        <div class="report-row">
+                            <div class="report-field">
+                                <label for="acHrIni">Hora de Entrada (>=)</label>
+                                <input id="acHrIni" type="time">
+                            </div>
+                            <div class="report-field">
+                                <label for="acHrFim">Hora de Saída (&le;)</label>
+                                <input id="acHrFim" type="time">
+                            </div>
+                            <div class="report-field">
+                                <label for="acRef">Refeições</label>
+                                <select id="acRef">
+                                    <option value="">Qualquer</option>
+                                    <option value="almoco">Almoço</option>
+                                    <option value="jantar">Jantar</option>
+                                    <option value="ambos">Ambos</option>
+                                    <option value="nenhum">Nenhuma</option>
+                                </select>
+                            </div>
+                            <div class="report-field" style="display:none;">
+                                <label for="acCols">Colunas</label>
+                                <div class="checkbox-grid">
+                                    <label><input type="checkbox" data-col="aluno" checked> Aluno</label>
+                                    <label><input type="checkbox" data-col="serie" checked> Série</label>
+                                    <label><input type="checkbox" data-col="turma" checked> Turma</label>
+                                    <label><input type="checkbox" data-col="data" checked> Data</label>
+                                    <label><input type="checkbox" data-col="entrada" checked> Entrada</label>
+                                    <label><input type="checkbox" data-col="saida" checked> Saída</label>
+                                    <label><input type="checkbox" data-col="refeicao" checked> Refeição</label>
+                                    <label><input type="checkbox" data-col="responsavel"> Responsável</label>
+                                    <label><input type="checkbox" data-col="telefone"> Telefone</label>
+                                    <label><input type="checkbox" data-col="status"> Status</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cards kpis" id="ac-kpis">
+                        <div class="kpi"><span>Total de Registros</span><strong>--</strong></div>
+                        <div class="kpi"><span>% Presença</span><strong>--</strong></div>
+                        <div class="kpi"><span>Refeições</span><strong>--</strong></div>
+                        <div class="kpi"><span>Média Entrada</span><strong>--</strong></div>
+                        <div class="kpi"><span>Média Saída</span><strong>--</strong></div>
+                    </div>
+                    <div class="results">
+                        <div class="results-toolbar">
+                            <div class="left"><strong>Resultados</strong><span class="muted">—</span></div>
+                            <div class="right"><input type="search" placeholder="Busca rápida…"></div>
+                        </div>
+                        <div class="charts-grid" id="ac-charts" hidden>
+                            <div class="grafico">
+                                <h4 class="block-title">Presenças</h4>
+                                <canvas id="acChartPizza"></canvas>
+                            </div>
+                        </div>
+                        <div class="scroll-x table-wrap">
+                            <table class="table" id="ac-table">
+                                <thead><tr></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card rg-panel" id="panel-cursos" hidden>
+                    <h3 class="block-title">Cursos Extracurriculares</h3>
+                    <div class="tabs">
+                        <button class="tab is-active" data-tab="curso">Por Curso</button>
+                        <button class="tab" data-tab="aluno">Por Aluno</button>
+                    </div>
+                    <div class="tabpane" data-pane="curso">
+                        <div class="report-row">
+                            <div class="report-field">
+                                <label for="cxCurso">Curso</label>
+                                <select id="cxCurso"><option value="">Selecione…</option></select>
+                            </div>
+                            <div class="report-field">
+                                <label for="cxProf">Professor</label>
+                                <select id="cxProf"><option value="">Qualquer</option></select>
+                            </div>
+                            <div class="report-field">
+                                <label for="cxPeriodo">Período (AAAA-MM)</label>
+                                <input id="cxPeriodo" type="month">
+                            </div>
+                            <div class="report-field">
+                                <label>&nbsp;</label>
+                                <div class="export-inline">
+                                    <button class="btn"><i class="ri-download-2-line"></i> CSV</button>
+                                    <button class="btn"><i class="ri-file-pdf-line"></i> PDF</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cards kpis">
+                            <div class="kpi"><span>Matrículas</span><strong>--</strong></div>
+                            <div class="kpi"><span>Valor Total</span><strong>--</strong></div>
+                            <div class="kpi"><span>Ativos</span><strong>--</strong></div>
+                            <div class="kpi"><span>Inativos</span><strong>--</strong></div>
+                        </div>
+                        <div class="scroll-x table-wrap">
+                            <table class="table" id="cx-table-curso">
+                                <thead>
+                                    <tr>
+                                        <th>Professor</th>
+                                        <th>Aluno</th>
+                                        <th>Responsável</th>
+                                        <th>Status</th>
+                                        <th>Valor Matrícula</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" style="text-align:right;font-weight:700;">Total</td>
+                                        <td><strong id="cx-total">--</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tabpane" data-pane="aluno" hidden>
+                        <div class="report-row">
+                            <div class="report-field">
+                                <label for="cxAluno">Aluno</label>
+                                <input id="cxAluno" type="search" placeholder="Nome do aluno…">
+                            </div>
+                            <div class="report-field">
+                                <label for="cxDataI">Data Inicial</label>
+                                <input id="cxDataI" type="date">
+                            </div>
+                            <div class="report-field">
+                                <label for="cxDataF">Data Final</label>
+                                <input id="cxDataF" type="date">
+                            </div>
+                            <div class="report-field">
+                                <label>&nbsp;</label>
+                                <div class="export-inline">
+                                    <button class="btn"><i class="ri-download-2-line"></i> CSV</button>
+                                    <button class="btn"><i class="ri-file-pdf-line"></i> PDF</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="charts-grid">
+                            <div class="grafico">
+                                <h4 class="block-title">Presenças por Curso</h4>
+                                <canvas id="cxChartPizzaAluno"></canvas>
+                            </div>
+                        </div>
+                        <div class="scroll-x table-wrap">
+                            <table class="table" id="cx-table-aluno">
+                                <thead>
+                                    <tr>
+                                        <th>Aluno</th>
+                                        <th>Responsável</th>
+                                        <th>Cursos Presentes</th>
+                                        <th>Professor</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card rg-panel" id="panel-financeiro" hidden>
+                    <h3 class="block-title">Financeiro</h3>
+                    <div class="report-row">
+                        <div class="report-field">
+                            <label for="fiPeriodo">Período (AAAA-MM)</label>
+                            <input id="fiPeriodo" type="month">
+                        </div>
+                        <div class="report-field">
+                            <label for="fiDataI">Data Inicial</label>
+                            <input id="fiDataI" type="date">
+                        </div>
+                        <div class="report-field">
+                            <label for="fiDataF">Data Final</label>
+                            <input id="fiDataF" type="date">
+                        </div>
+                        <div class="report-field">
+                            <label>&nbsp;</label>
+                            <div class="export-inline">
+                                <button class="btn"><i class="ri-download-2-line"></i> CSV</button>
+                                <button class="btn"><i class="ri-file-pdf-line"></i> PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cards kpis">
+                        <div class="kpi"><span>Total no Período</span><strong>--</strong></div>
+                        <div class="kpi"><span>Recebido</span><strong>--</strong></div>
+                        <div class="kpi"><span>Em Aberto</span><strong>--</strong></div>
+                        <div class="kpi"><span>Ticket Médio</span><strong>--</strong></div>
+                    </div>
+                    <div class="scroll-x table-wrap">
+                        <table class="table" id="fi-table">
+                            <thead>
+                                <tr>
+                                    <th>Origem</th>
+                                    <th>Descrição</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card rg-panel" id="panel-logs" hidden>
+                    <h3 class="block-title">Logs / Ações</h3>
+                    <div class="report-row">
+                        <div class="report-field">
+                            <label for="lgAcao">Ação</label>
+                            <select id="lgAcao">
+                                <option value="">Qualquer</option>
+                                <option value="login">Login</option>
+                                <option value="create">Criação</option>
+                                <option value="update">Atualização</option>
+                                <option value="delete">Exclusão</option>
+                                <option value="export">Exportação</option>
+                            </select>
+                        </div>
+                        <div class="report-field">
+                            <label for="lgUser">Usuário</label>
+                            <select id="lgUser">
+                                <option value="">Qualquer</option>
+                            </select>
+                        </div>
+                        <div class="report-field">
+                            <label for="lgDataI">Data Inicial</label>
+                            <input id="lgDataI" type="date">
+                        </div>
+                        <div class="report-field">
+                            <label for="lgDataF">Data Final</label>
+                            <input id="lgDataF" type="date">
+                        </div>
+                    </div>
+                    <div class="scroll-x table-wrap">
+                        <table class="table" id="lg-table">
+                            <thead>
+                                <tr>
+                                    <th>Data/Hora</th>
+                                    <th>Usuário</th>
+                                    <th>Ação</th>
+                                    <th>Detalhes</th>
+                                    <th>Origem</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-alunos" class="view">
+            <div class="content">
+                <div class="card">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="ri-filter-line"></i>
+                            Filtros
+                        </h3>
+                    </div>
+                        <div class="field">
+                        <label class="label">Segmento</label>
+                        <div class="chips" id="chips-segmento">
+                            <label class="chip" for="seg-todos">Todos</label>
+                            <input id="seg-todos" class="chip-control" type="radio" name="segmento" value="todos" checked>
+
+                            <label class="chip" for="seg-ei">Educação Infantil</label>
+                            <input id="seg-ei" class="chip-control" type="radio" name="segmento" value="educacao-infantil">
+
+                            <label class="chip" for="seg-ef">Ensino Fundamental</label>
+                            <input id="seg-ef" class="chip-control" type="radio" name="segmento" value="ensino-fundamental">
+
+                            <label class="chip" for="seg-em">Ensino Médio</label>
+                            <input id="seg-em" class="chip-control" type="radio" name="segmento" value="ensino-medio">
+                        </div>
+                        </div>
+
+                    <div class="field">
+                        <label class="label">Série</label>
+                        <div class="select">
+                            <select id="filtroSerie">
+                                <option value="">Todas as séries</option>
+                                <option value="1ano">1º Ano</option>
+                                <option value="2ano">2º Ano</option>
+                                <option value="3ano">3º Ano</option>
+                            </select>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Turma</label>
+                        <div class="select">
+                            <select id="filtroTurma">
+                                <option value="">Todas as turmas</option>
+                                <option value="A">Turma A</option>
+                                <option value="B">Turma B</option>
+                                <option value="C">Turma C</option>
+                            </select>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Buscar Aluno</label>
+                        <div class="toolbar">
+                            <i class="ri-search-line"></i>
+                            <input id="buscaAlunosFiltro" class="input search" placeholder="Digite o nome do aluno">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button id="btnLimparFiltros" class="btn btn--ghost">
+                            <i class="ri-eraser-line"></i>
+                            Limpar Filtros
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-header">
+                        <h3 class="block-title" id="tituloTurma">Todos os Alunos (5 alunos)</h3>
+                        <div class="toolbar">
+                            <i class="ri-search-line"></i>
+                            <input id="buscaAlunos" class="input search" placeholder="Buscar aluno na lista">
+                              <button id="btnAddAluno" class="fab fab--small" type="button" title="Adicionar Aluno" data-modal="aluno">
+                                  <i class="ri-user-add-line"></i>
+                              </button>
+                        </div>
+                    </div>
+                    <div class="scroll-x">
+                        <div class="table table--wide" id="tabelaAlunos">
+                            <div class="table__row table__head">
+                                <span>Aluno</span>
+                                <span>Responsável</span>
+                                <span>Status</span>
+                                <span>Ações</span>
+                            </div>
+                            
+                            <div class="table__row">
+                                <span>João Silva</span>
+                                <span>Maria Silva</span>
+                                <span><span class="badge ok">Ativo</span></span>
+                                <span class="actions">
+                                    <button class="icon-btn sm" title="Editar">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm" title="Transferir">
+                                        <i class="ri-exchange-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm danger" title="Excluir">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                            <div class="table__row">
+                                <span>Ana Oliveira</span>
+                                <span>Carlos Oliveira</span>
+                                <span><span class="badge ok">Ativo</span></span>
+                                <span class="actions">
+                                    <button class="icon-btn sm" title="Editar">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm" title="Transferir">
+                                        <i class="ri-exchange-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm danger" title="Excluir">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                            <div class="table__row">
+                                <span>Pedro Santos</span>
+                                <span>Paula Santos</span>
+                                <span><span class="badge danger">Inativo</span></span>
+                                <span class="actions">
+                                    <button class="icon-btn sm" title="Editar">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm" title="Transferir">
+                                        <i class="ri-exchange-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm danger" title="Excluir">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                            <div class="table__row">
+                                <span>Maria Costa</span>
+                                <span>José Costa</span>
+                                <span><span class="badge ok">Ativo</span></span>
+                                <span class="actions">
+                                    <button class="icon-btn sm" title="Editar">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm" title="Transferir">
+                                        <i class="ri-exchange-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm danger" title="Excluir">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                            <div class="table__row">
+                                <span>Carlos Lima</span>
+                                <span>Ana Lima</span>
+                                <span><span class="badge ok">Ativo</span></span>
+                                <span class="actions">
+                                    <button class="icon-btn sm" title="Editar">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm" title="Transferir">
+                                        <i class="ri-exchange-line"></i>
+                                    </button>
+                                    <button class="icon-btn sm danger" title="Excluir">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="muted">Selecione uma turma ou use os filtros para listar os alunos.</p>
+                </div>
+              <div class="modal-backdrop" id="alunoModal" hidden>
+                  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="alunoModalTitle">
+                      <div class="modal__header">
+                          <h3 id="alunoModalTitle"><i class="ri-user-add-line"></i> Cadastrar Aluno</h3>
+                          <button class="modal__close" id="alunoModalClose" aria-label="Fechar">
+                              <i class="ri-close-line"></i>
+                          </button>
+                      </div>
+                      <div class="modal__body">
+                          <form id="alunoForm" class="grid">
+                              <div class="grid-4">
+                                  <div class="field">
+                                      <label class="label" for="alunoSelSegmento">Segmento</label>
+                                      <div class="select">
+                                          <select id="alunoSelSegmento">
+                                              <option value="">Selecione o Segmento</option>
+                                          </select>
+                                          <i class="ri-arrow-down-s-line"></i>
+                                      </div>
+                                  </div>
+                                  <div class="field">
+                                      <label class="label" for="alunoSelSerie">Série</label>
+                                      <div class="select">
+                                          <select id="alunoSelSerie">
+                                              <option value="">Selecione a Série</option>
+                                          </select>
+                                          <i class="ri-arrow-down-s-line"></i>
+                                      </div>
+                                  </div>
+                                  <div class="field">
+                                      <label class="label" for="alunoSelTurma">Turma</label>
+                                      <div class="select">
+                                          <select id="alunoSelTurma">
+                                              <option value="">Selecione a Turma</option>
+                                          </select>
+                                          <i class="ri-arrow-down-s-line"></i>
+                                      </div>
+                                  </div>
+                                  <div class="field">
+                                      <label class="label" for="alunoNome">Nome do Aluno</label>
+                                      <input class="input" id="alunoNome" type="text" placeholder="Ex.: João Silva" required>
+                                  </div>
+                              </div>
+                              
+                              <div class="grid-2">
+                                  <div class="field">
+                                      <label class="label" for="alunoResp">Responsável</label>
+                                      <input class="input" id="alunoResp" type="text" placeholder="Ex.: Maria Silva">
+                                  </div>
+                                  <div class="field">
+                                      <label class="label" for="alunoCursoExtra">Curso Extracurricular</label>
+                                      <div class="select">
+                                          <select id="alunoCursoExtra">
+                                              <option value="">Nenhum</option>
+                                          </select>
+                                          <i class="ri-arrow-down-s-line"></i>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- SEÇÃO DE HORÁRIOS SEMANAIS (ADICIONADA) -->
+                              <div class="acad-detalhes">
+                                  <div class="divider"></div>
+                                  <div class="section-split">
+                                      <h4 class="block-title"><i class="ri-calendar-schedule-line"></i> Grade Semanal</h4>
+                                      <button type="button" id="alunoBtnReplicar" class="btn btn--ghost">
+                                          <i class="ri-file-copy-line"></i> Replicar Segunda-feira
+                                      </button>
+                                  </div>
+                                  
+                                  <div id="alunoWeekGrid" class="week-grid"></div>
+                                  
+                                  <div class="field-inline">
+                                      <label class="check"><input type="checkbox" id="alunoTemAlmoco"> Inclui Almoço</label>
+                                      <label class="check"><input type="checkbox" id="alunoTemJantar"> Inclui Jantar</label>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                      <div class="modal__footer">
+                          <button class="btn" id="alunoModalCancel">Cancelar</button>
+                          <button class="btn btn--primary" id="alunoSalvar">
+                              <i class="ri-check-line"></i> Salvar
+                          </button>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <button id="fabAlunos" class="fab" aria-label="Adicionar aluno" title="Adicionar aluno">
+                <i class="ri-user-add-line"></i>
+            </button>
+        </section>
+
+        <section id="view-ferramentas" class="view">
+            <div class="content">
+                <!-- Cabeçalho da página -->
+                <header class="page__header">
+                    <div class="header__left">
+                    </div>
+                    <div class="header__right">
+                        <div class="userbox">
+                            <div class="user-chip">
+                                <i class="ri-user-3-line"></i>
+                                <b>Admin</b>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                
+                <div class="grid grid--two">
+                    <div class="card" id="impCard">
+                        <!-- Cabeçalho da seção de importação -->
+                        <div class="section-header">
+                            <h2 class="section-title"><i class="ri-upload-2-line"></i> Importação em Massa (CSV)</h2>
+                            <div class="toolbar">
+                                <a class="btn" id="impModeloBtn" href="template_csv.php">
+                                    <i class="ri-file-download-line"></i> Baixar modelo CSV
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Área de upload -->
+                        <div id="impDrop" class="imp-drop" aria-label="Área para arrastar e soltar CSV">
+                            <i class="ri-drag-drop-line" aria-hidden="true"></i>
+                            <div class="big">Arraste seu arquivo <b>.csv</b> aqui</div>
+                            <small>ou</small>
+                            <div class="imp-actions">
+                                <label class="btn btn--primary" for="impInput">
+                                    <i class="ri-folder-open-line"></i> Selecionar CSV
+                                </label>
+                                <input id="impInput" type="file" accept=".csv" hidden>
+                                <span class="muted-imp">Apenas CSV UTF-8. (XLSX não é suportado)</span>
+                            </div>
+                            <div class="imp-file" id="impFileInfo" hidden>
+                                <i class="ri-file-2-line" aria-hidden="true"></i>
+                                <span id="impFileName">arquivo.csv</span>
+                                <span class="badge" id="impFileSize">0 KB</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Controles -->
+                        <div class="field-inline">
+                            <label class="check" title="Faz a validação sem gravar no banco">
+                                <input id="impDryRun" type="checkbox" checked> Pré-visualizar (sem gravar)
+                            </label>
+                            <span class="spacer"></span>
+                            <button class="btn" id="impValidar">
+                                <i class="ri-search-eye-line"></i> Validar
+                            </button>
+                            <button class="btn btn--primary" id="impImportar" disabled>
+                                <i class="ri-database-2-line"></i> Importar
+                            </button>
+                            <button class="btn btn--ghost" id="impReset">
+                                <i class="ri-eraser-line"></i> Limpar
+                            </button>
+                        </div>
+                        
+                        <!-- Progresso e status -->
+                        <div class="imp-progress" aria-hidden="true">
+                            <b id="impBar"></b>
+                        </div>
+                        <small class="muted-imp" id="impStatus">Selecione um arquivo para começar.</small>
+                        
+                        <!-- Sumário -->
+                        <div id="impSummary" class="imp-summary" hidden>
+                            <div class="imp-badges">
+                                <span class="badge"><i class="ri-list-unordered"></i> Linhas: <b id="sumLinhas">--</b></span>
+                                <span class="badge"><i class="ri-stack-line"></i> Séries: <b id="sumSeries">--</b></span>
+                                <span class="badge"><i class="ri-stackshare-line"></i> Turmas: <b id="sumTurmas">--</b></span>
+                                <span class="badge"><i class="ri-user-3-line"></i> Alunos: <b id="sumAlunos">--</b></span>
+                                <span class="badge err" id="sumErrosWrap" hidden>
+                                    <i class="ri-error-warning-line"></i> Erros: <b id="sumErros">0</b>
+                                </span>
+                            </div>
+                            <ul class="imp-errlist" id="impErros" hidden></ul>
+                        </div>
+                        
+                        <!-- Pré-visualização -->
+                        <div class="imp-preview">
+                            <div class="imp-legend">
+                                <strong>Pré-visualização do CSV</strong>
+                                <small class="muted-imp">(máx. 30 linhas)</small>
+                            </div>
+                            <div class="imp-table-wrap">
+                                <table class="imp-table" id="impPreview">
+                                    <thead></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="muted-imp">— carregue um CSV para visualizar</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                        </div>
+                        
+                        <!-- Detalhes técnicos -->
+                        <div>
+                            <details id="impDetalhes" hidden>
+                                <summary><i class="ri-terminal-box-line"></i> Detalhes técnicos da validação/importação</summary>
+                                <pre id="impOutput"></pre>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const me = await fetch('../api/auth/me.php', { credentials: 'include' });
+                const j = await me.json();
+                if (!me.ok || !j.ok) throw new Error('Sessão expirada');
+                window.USER = j.data || j;
+                const perms = USER.permissoes || [];
+                const userName = document.getElementById('userName');
+                if (userName && USER.nome) userName.textContent = USER.nome;
+                aplicarPermissoes(perms);
+                document.documentElement.style.visibility = 'visible';
+            } catch (err) {
+                console.error('Erro ao verificar sessão', err);
+                window.location.href = '../index.html';
+            }
+        });
+
+        function aplicarPermissoes(perms) {
+            if (!perms.includes('acad.visualizar')) hide('#view-academico');
+            if (!perms.includes('curso.cadastro')) hide('#btnAddCurso');
+            if (!perms.includes('rel.receita')) { hide('#kpiReceita'); hide('#grafico-receita'); }
+            if (!perms.includes('rel.refeicoes')) { hide('#grafico-refeicoes'); hide('#kpiRefeicoes'); }
+            if (!perms.includes('rel.horas_extras')) { hide('#grafico-horas'); hide('#kpiHoras'); }
+            if (!perms.includes('rel.total_alunos')) { hide('#grafico-matriculas'); hide('#kpiAlunos'); }
+            if (!perms.includes('fin.atualizar_preco')) hide('#view-financeiro');
+            if (!perms.includes('horarios.edicao')) hide('.btn-editar-rotina');
+            if (!perms.includes('config.geral')) hide('#view-config');
+            if (!perms.includes('logs.visualizar')) hide('#view-logs');
+            if (!perms.includes('admin.geral')) hide('#view-admin');
+            document.querySelectorAll('[data-require]').forEach(el => {
+                const cap = el.dataset.require;
+                if (!perms.includes(cap)) el.style.display = 'none';
+            });
+        }
+
+        function hide(sel) {
+            const els = document.querySelectorAll(sel);
+            els.forEach(el => el.style.display = 'none');
+        }
+
+        function hideButton(viewName) {
+            document.querySelectorAll(`.nav__item[data-view="${viewName}"]`).forEach(btn => btn.style.display = 'none');
+        }
+
+        function temRelatorio(perms) {
+            return perms.some(p => p.startsWith('rel.'));
+        }
+
+        function temAlgumCurso(perms) {
+            return perms.some(p => p.startsWith('curso.'));
+        }
+
+        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+            try { await fetch('../api/auth/logout.php', { method: 'POST', credentials: 'include' }); } catch {}
+            window.location.href = '../index.html';
+        });
+    </script>
+
+    <script src="assets/dashboard.js?v=4"></script>
+    <script src="assets/new.js"></script>
+    <script src="assets/configuracoes.js"></script>
+    <script src="assets/integral.js"></script>
+    <script src="assets/relatorios.js?v=2"></script>
+    <script src="assets/importar_csv.js"></script>
+</body>
+</html>
