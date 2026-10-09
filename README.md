@@ -135,7 +135,7 @@ O projeto não inclui credenciais administrativas padrão. Para criar o primeiro
 php scripts/create_admin.php --user=admin --email=admin@localhost
 ```
 
-O comando solicitará o nome e uma senha com pelo menos 12 caracteres. A senha é armazenada somente como hash seguro no MySQL.
+O comando solicitará o nome e uma senha com pelo menos 8 caracteres. A senha é armazenada somente como hash seguro no MySQL.
 
 ## MySQL Workbench
 

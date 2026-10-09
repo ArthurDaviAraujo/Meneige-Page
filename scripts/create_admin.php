@@ -34,11 +34,11 @@ $options = getopt('', ['user:', 'email:', 'name::']);
 $usuario = option_value($options, 'user', 'Usuário', 'admin');
 $email = option_value($options, 'email', 'E-mail');
 $nome = option_value($options, 'name', 'Nome', 'Administrador');
-$password = (string)(getenv('SYSTEMCOLLEGE_ADMIN_PASSWORD') ?: prompt_cli('Senha (mínimo de 12 caracteres): '));
+$password = (string)(getenv('SYSTEMCOLLEGE_ADMIN_PASSWORD') ?: prompt_cli('Senha (mínimo de 8 caracteres): '));
 
 if (mb_strlen($usuario) < 3) fail_cli('O usuário precisa ter pelo menos 3 caracteres.');
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fail_cli('Informe um e-mail válido.');
-if (mb_strlen($password) < 12) fail_cli('A senha precisa ter pelo menos 12 caracteres.');
+if (mb_strlen($password) < 8) fail_cli('A senha precisa ter pelo menos 8 caracteres.');
 
 $pdo = pdo();
 $pdo->beginTransaction();
