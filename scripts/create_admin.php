@@ -14,13 +14,19 @@ function fail_cli(string $message): void {
   exit(1);
 }
 
+function prompt_cli(string $message): string {
+  fwrite(STDOUT, $message);
+  $value = fgets(STDIN);
+  return $value === false ? '' : trim($value);
+}
+
 /** @param array<string, mixed> $options */
 function option_value(array $options, string $key, string $prompt, string $default = ''): string {
   $value = trim((string)($options[$key] ?? ''));
   if ($value !== '') return $value;
 
   $suffix = $default !== '' ? " [$default]" : '';
-  $typed = trim((string)readline($prompt . $suffix . ': '));
+  $typed = prompt_cli($prompt . $suffix . ': ');
   return $typed !== '' ? $typed : $default;
 }
 
@@ -28,7 +34,7 @@ $options = getopt('', ['user:', 'email:', 'name::']);
 $usuario = option_value($options, 'user', 'Usuário', 'admin');
 $email = option_value($options, 'email', 'E-mail');
 $nome = option_value($options, 'name', 'Nome', 'Administrador');
-$password = (string)(getenv('SYSTEMCOLLEGE_ADMIN_PASSWORD') ?: readline('Senha (mínimo de 12 caracteres): '));
+$password = (string)(getenv('SYSTEMCOLLEGE_ADMIN_PASSWORD') ?: prompt_cli('Senha (mínimo de 12 caracteres): '));
 
 if (mb_strlen($usuario) < 3) fail_cli('O usuário precisa ter pelo menos 3 caracteres.');
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fail_cli('Informe um e-mail válido.');
